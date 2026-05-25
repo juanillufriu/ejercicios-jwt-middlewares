@@ -2,7 +2,7 @@
 
 Repositorio del proyecto: 
 
-urlRepositorio GitHub del proyectohttps://github.com/juanillufriu/ejercicios-rest
+Repositorio GitHub del proyecto: https://github.com/juanillufriu/ejercicios-rest
 
 ---
 
