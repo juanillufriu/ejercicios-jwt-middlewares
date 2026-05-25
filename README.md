@@ -1,6 +1,6 @@
 # Laboratorio NestJS — Middlewares, JWT, Roles y SQLite
 
-Repositorio del proyecto: 
+Repositorio del proyecto: ejercicios-rest
 
 Repositorio GitHub del proyecto: https://github.com/juanillufriu/ejercicios-rest
 
