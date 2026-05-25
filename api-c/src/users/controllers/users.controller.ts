@@ -1,18 +1,29 @@
-import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
-import { ExternalUser } from '../user.types';
-import { UsersService } from '../services/users.service';
+import {
+  Controller,
+  Get,
+  UseGuards,
+} from '@nestjs/common';
+
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+
+import { RolesGuard } from '../../common/guards/roles.guard';
+
+import { Roles } from '../../common/decorators/roles.decorator';
+
+import { UserRole } from '../user-role.enum';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
-
   @Get()
-  findAll(): Promise<ExternalUser[]> {
-    return this.usersService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number): Promise<ExternalUser> {
-    return this.usersService.findOne(id);
+  @UseGuards(
+    JwtAuthGuard,
+    RolesGuard,
+  )
+  @Roles(UserRole.ADMIN)
+  findAllUsers() {
+    return {
+      message:
+        'Ruta protegida solo para administradores',
+    };
   }
 }

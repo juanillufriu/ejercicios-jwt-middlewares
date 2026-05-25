@@ -24,15 +24,22 @@ __decorate([
     __metadata("design:type", String)
 ], UserEntity.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ unique: true }),
+    (0, typeorm_1.Column)({
+        unique: true,
+    }),
     __metadata("design:type", String)
 ], UserEntity.prototype, "email", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ select: false }),
+    (0, typeorm_1.Column)({
+        select: false,
+    }),
     __metadata("design:type", String)
 ], UserEntity.prototype, "passwordHash", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ type: 'text', default: user_role_enum_1.UserRole.USER }),
+    (0, typeorm_1.Column)({
+        type: 'text',
+        default: user_role_enum_1.UserRole.USER,
+    }),
     __metadata("design:type", String)
 ], UserEntity.prototype, "role", void 0);
 exports.UserEntity = UserEntity = __decorate([
