@@ -14,8 +14,21 @@ import { CategoriesModule } from './categories/categories.module';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
 import { TimingMiddleware } from './common/middlewares/timing.middleware';
 
+import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
 @Module({
-  imports: [ProductsModule, UsersModule, CategoriesModule],
+  imports: [ProductsModule, UsersModule, CategoriesModule, ConfigModule.forRoot({
+  isGlobal: true,
+  envFilePath: ['.env'],
+}),
+
+TypeOrmModule.forRoot({
+  type: 'sqlite',
+  database: process.env.SQLITE_DATABASE,
+  synchronize: true,
+  autoLoadEntities: true,
+}), ],
   controllers: [AppController],
   providers: [AppService],
 })
@@ -24,3 +37,4 @@ export class AppModule implements NestModule {
     consumer.apply(LoggerMiddleware, TimingMiddleware).forRoutes('*');
   }
 }
+
