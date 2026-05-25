@@ -15,6 +15,8 @@ const users_module_1 = require("./users/users.module");
 const categories_module_1 = require("./categories/categories.module");
 const logger_middleware_1 = require("./common/middlewares/logger.middleware");
 const timing_middleware_1 = require("./common/middlewares/timing.middleware");
+const config_1 = require("@nestjs/config");
+const typeorm_1 = require("@nestjs/typeorm");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer.apply(logger_middleware_1.LoggerMiddleware, timing_middleware_1.TimingMiddleware).forRoutes('*');
@@ -23,7 +25,16 @@ let AppModule = class AppModule {
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [products_module_1.ProductsModule, users_module_1.UsersModule, categories_module_1.CategoriesModule],
+        imports: [products_module_1.ProductsModule, users_module_1.UsersModule, categories_module_1.CategoriesModule, config_1.ConfigModule.forRoot({
+                isGlobal: true,
+                envFilePath: ['.env'],
+            }),
+            typeorm_1.TypeOrmModule.forRoot({
+                type: 'sqlite',
+                database: process.env.SQLITE_DATABASE,
+                synchronize: true,
+                autoLoadEntities: true,
+            }),],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
     })
