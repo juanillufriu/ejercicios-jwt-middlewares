@@ -1,0 +1,35 @@
+<div class="row justify-content-center mt-5">
+  <div class="col-md-6 col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-body p-4 text-center">
+        <i class="bi bi-envelope-paper display-4" style="color: var(--primary)"></i>
+        <h3 class="mt-2 fw-bold">Revisá tu email</h3>
+        <p class="text-muted mt-3 mb-4">
+          Te enviamos un link de verificación. Abrí el correo y hacé click en el botón para activar tu cuenta.
+        </p>
+
+        @if (auth.user(); as user) {
+          <p class="small text-muted mb-3">
+            Enviado a <strong>{{ user.email }}</strong>
+          </p>
+
+          <button class="btn btn-outline-primary w-100" (click)="resend()" [disabled]="loading()">
+            @if (loading()) {
+              <span class="spinner-border spinner-border-sm me-1" role="status"></span>
+            }
+            Reenviar email
+          </button>
+        } @else {
+          <p class="small text-muted">
+            <a routerLink="/login">Iniciá sesión</a> para reenviar el email.
+          </p>
+        }
+
+        <hr />
+        <p class="small text-muted mb-0">
+          <a routerLink="/login">Volver al inicio de sesión</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

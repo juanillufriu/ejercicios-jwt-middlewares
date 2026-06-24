@@ -1,0 +1,9 @@
+<div class="toast-container">
+  @for (toast of toasts(); track toast.id) {
+    <div class="toast-item text-white {{ bgClass(toast.type) }}" role="alert">
+      <i class="bi {{ iconClass(toast.type) }} me-2"></i>
+      <span class="flex-grow-1">{{ toast.message }}</span>
+      <button type="button" class="btn-close btn-close-white ms-2" (click)="dismiss(toast.id)" aria-label="Cerrar"></button>
+    </div>
+  }
+</div>
