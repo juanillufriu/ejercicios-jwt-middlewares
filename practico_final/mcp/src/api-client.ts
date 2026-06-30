@@ -40,20 +40,31 @@ class ApiClient {
     return this.token !== null;
   }
 
-  async autoLogin(): Promise<boolean> {
+    async autoLogin(): Promise<boolean> {
     const email = process.env.API_C_EMAIL;
     const password = process.env.API_C_PASSWORD;
-    if (!email || !password) {
+    
+    // Si las variables vienen vacías, con comillas rotas o son indefinidas, cancelamos el proceso limpio
+    if (!email || !password || email.trim() === "" || password.trim() === "") {
+      console.log("[api-c-bridge] Sin credenciales env válidas, esperando auth_login manual");
       return false;
     }
+    
     try {
-      const res = await this.login(email, password);
+      // Limpiamos posibles comillas residuales que inyecte PowerShell de forma errónea
+      const cleanEmail = email.replace(/['"]/g, "");
+      const cleanPassword = password.replace(/['"]/g, "");
+      
+      const res = await this.login(cleanEmail, cleanPassword);
       this.setToken(res.access_token);
+      console.log("[api-c-bridge] Autenticación automática exitosa");
       return true;
-    } catch {
+    } catch (error) {
+      console.log("[api-c-bridge] Error en la autenticación automática");
       return false;
     }
   }
+
 
   async get(path: string, config?: any): Promise<any> {
     const res = await this.client.get(path, config);
