@@ -46,7 +46,7 @@ class ApiClient {
     
     // Si las variables vienen vacías, con comillas rotas o son indefinidas, cancelamos el proceso limpio
     if (!email || !password || email.trim() === "" || password.trim() === "") {
-      console.log("[api-c-bridge] Sin credenciales env válidas, esperando auth_login manual");
+      console.error("[api-c-bridge] Sin credenciales env válidas, esperando auth_login manual");
       return false;
     }
     
@@ -57,10 +57,10 @@ class ApiClient {
       
       const res = await this.login(cleanEmail, cleanPassword);
       this.setToken(res.access_token);
-      console.log("[api-c-bridge] Autenticación automática exitosa");
+      console.error("[api-c-bridge] Autenticación automática exitosa");
       return true;
     } catch (error) {
-      console.log("[api-c-bridge] Error en la autenticación automática");
+      console.error("[api-c-bridge] Error en la autenticación automática");
       return false;
     }
   }
