@@ -8,29 +8,56 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CategoriesService = void 0;
 const common_1 = require("@nestjs/common");
-const categories_repository_1 = require("../repositories/categories.repository");
-const products_repository_1 = require("../../products/repositories/products.repository");
+const typeorm_1 = require("@nestjs/typeorm");
+const typeorm_2 = require("typeorm");
+const category_entity_1 = require("../entities/category.entity");
 let CategoriesService = class CategoriesService {
-    categoriesRepository;
-    productsRepository;
-    constructor(categoriesRepository, productsRepository) {
-        this.categoriesRepository = categoriesRepository;
-        this.productsRepository = productsRepository;
+    categoriesRepo;
+    constructor(categoriesRepo) {
+        this.categoriesRepo = categoriesRepo;
     }
-    findAll() { return this.categoriesRepository.findAll(); }
-    findOne(id) { const category = this.categoriesRepository.findOne(id); if (!category)
-        throw new common_1.NotFoundException('Category not found'); return category; }
-    create(name) { return this.categoriesRepository.create(name); }
-    delete(id) { if (this.productsRepository.findByCategory(id).length > 0)
-        throw new common_1.ConflictException('Category has products'); this.categoriesRepository.delete(id); }
-    products(id) { return this.productsRepository.findByCategory(id); }
+    findAll() {
+        return this.categoriesRepo.find({ order: { name: 'ASC' } });
+    }
+    async findOne(id) {
+        const category = await this.categoriesRepo.findOne({ where: { id } });
+        if (!category)
+            throw new common_1.NotFoundException('Category not found');
+        return category;
+    }
+    async create(name) {
+        const exists = await this.categoriesRepo.findOne({ where: { name } });
+        if (exists)
+            throw new common_1.ConflictException('Category name already exists');
+        const category = this.categoriesRepo.create({ name });
+        return this.categoriesRepo.save(category);
+    }
+    async update(id, name) {
+        const category = await this.findOne(id);
+        if (name !== category.name) {
+            const exists = await this.categoriesRepo.findOne({ where: { name } });
+            if (exists)
+                throw new common_1.ConflictException('Category name already exists');
+        }
+        category.name = name;
+        return this.categoriesRepo.save(category);
+    }
+    async remove(id) {
+        const category = await this.findOne(id);
+        await this.categoriesRepo.delete(id);
+        return category;
+    }
 };
 exports.CategoriesService = CategoriesService;
 exports.CategoriesService = CategoriesService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [categories_repository_1.CategoriesRepository, products_repository_1.ProductsRepository])
+    __param(0, (0, typeorm_1.InjectRepository)(category_entity_1.CategoryEntity)),
+    __metadata("design:paramtypes", [typeorm_2.Repository])
 ], CategoriesService);
 //# sourceMappingURL=categories.service.js.map

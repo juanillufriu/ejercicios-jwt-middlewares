@@ -1,15 +1,11 @@
-import { CategoriesRepository } from '../repositories/categories.repository';
-import { ProductsRepository } from '../../products/repositories/products.repository';
+import { Repository } from 'typeorm';
+import { CategoryEntity } from '../entities/category.entity';
 export declare class CategoriesService {
-    private readonly categoriesRepository;
-    private readonly productsRepository;
-    constructor(categoriesRepository: CategoriesRepository, productsRepository: ProductsRepository);
-    findAll(): import("../interfaces/category.interface").Category[];
-    findOne(id: number): import("../interfaces/category.interface").Category;
-    create(name: string): {
-        id: number;
-        name: string;
-    };
-    delete(id: number): void;
-    products(id: number): import("../../products/product.interface").Product[];
+    private readonly categoriesRepo;
+    constructor(categoriesRepo: Repository<CategoryEntity>);
+    findAll(): Promise<CategoryEntity[]>;
+    findOne(id: number): Promise<CategoryEntity>;
+    create(name: string): Promise<CategoryEntity>;
+    update(id: number, name: string): Promise<CategoryEntity>;
+    remove(id: number): Promise<CategoryEntity>;
 }

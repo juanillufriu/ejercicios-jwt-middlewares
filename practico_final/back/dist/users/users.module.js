@@ -15,6 +15,7 @@ const user_entity_1 = require("./user.entity");
 const users_controller_1 = require("./controllers/users.controller");
 const account_controller_1 = require("./controllers/account.controller");
 const account_service_1 = require("./services/account.service");
+const admin_users_service_1 = require("./services/admin-users.service");
 const mail_module_1 = require("../mail/mail.module");
 let UsersModule = class UsersModule {
 };
@@ -28,7 +29,7 @@ exports.UsersModule = UsersModule = __decorate([
             mail_module_1.MailModule,
         ],
         controllers: [users_controller_1.UsersController, account_controller_1.AccountController],
-        providers: [account_service_1.AccountService],
+        providers: [account_service_1.AccountService, admin_users_service_1.AdminUsersService],
         exports: [typeorm_1.TypeOrmModule],
     })
 ], UsersModule);
